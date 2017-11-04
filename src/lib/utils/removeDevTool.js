@@ -6,8 +6,10 @@ let devToolRemoved = false;
 
 function removeDevTool() {
   if (!devToolRemoved) {
-    ReactInstrumentation.debugTool.removeHook(ReactDOMUnknownPropertyHook);
-    ReactInstrumentation.debugTool.removeHook(ReactDOMNullInputValuePropHook);
+    if (ReactInstrumentation.debugTool) {
+      ReactInstrumentation.debugTool.removeHook(ReactDOMUnknownPropertyHook);
+      ReactInstrumentation.debugTool.removeHook(ReactDOMNullInputValuePropHook);
+    }
 
     devToolRemoved = true;
 
@@ -20,8 +22,10 @@ function removeDevTool() {
 removeDevTool.restore = function restore() {
   devToolRemoved = false;
 
-  ReactInstrumentation.debugTool.addHook(ReactDOMUnknownPropertyHook);
-  ReactInstrumentation.debugTool.addHook(ReactDOMNullInputValuePropHook);
+  if (ReactInstrumentation.debugTool) {
+    ReactInstrumentation.debugTool.addHook(ReactDOMUnknownPropertyHook);
+    ReactInstrumentation.debugTool.addHook(ReactDOMNullInputValuePropHook);
+  }
 };
 
 module.exports = removeDevTool;
